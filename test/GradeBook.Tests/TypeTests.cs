@@ -4,8 +4,90 @@ using Xunit;
 
 namespace GradeBook.Tests
 {
+    
+
+    
     public class TypeTests
     {
+        [Fact]
+        public void StringsBehaveLikeValueTypes()
+        {
+            string name = "Jim";
+            var upper = MakeUppercase(name);
+
+            Assert.Equal("Jim",name);
+            Assert.Equal("JIM",upper);
+
+        }
+
+        private string MakeUppercase(string parameter)
+        {
+           return parameter.ToUpper();
+        }
+
+        [Fact]
+        public void ValueTypeAlsoPassByValue(){
+            //arrange
+            var x = GetInt();
+            //act
+            SetInt(ref x);
+            //assert
+            Assert.Equal(42,x);
+        }
+
+        private void  SetInt(ref int z)
+        {
+
+
+             z = 42;
+        }
+
+        
+        private int GetInt()
+        {
+            return 3;
+        }
+
+              
+
+        [Fact]
+        public void CSharpCanPassByRef()
+        {
+            //arrange
+            var book1 = GetBook("Book 1");
+            
+            //act
+            GetBookSetName(ref book1,"New Name");  //use modifier out
+
+            //assert
+            Assert.Equal("New Name", book1.Name);
+               
+        }
+
+        private void GetBookSetName(ref Book book, string name)
+        {
+            book = new Book(name);
+        }
+        
+        [Fact]
+        public void CSharpIsPassByValue()
+        {
+            //arrange
+            var book1 = GetBook("Book 1");
+            
+            //act
+            GetBookSetName(book1,"New Name");
+
+            //assert
+            Assert.Equal("Book 1", book1.Name);
+               
+        }
+
+        private void GetBookSetName(Book book, string name)
+        {
+            book = new Book(name);
+            book.Name = name;
+        }
         [Fact]
         public void CanSetNameFromReference()
         {
